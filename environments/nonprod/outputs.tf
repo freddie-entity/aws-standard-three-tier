@@ -12,6 +12,6 @@ output "public_subnets" {
 }
 
 # Module: Webserver
-output "webserver_alb_dns" {
-  value = module.webserver.webserver_alb_dns
-}
+# output "webserver_alb_dns" {
+#   value = module.webserver.webserver_alb_dns
+# }

@@ -7,11 +7,19 @@ variable "vpc_id" {
     default = ""
 }
 
+variable "tier" {
+  default = ""
+}
+
 variable "public_subnets" {
   default = []
 }
 
-variable "private_subnets" {
+variable "application_subnets" {
+  default = []
+}
+
+variable "security_group_ids" {
   default = []
 }
 
@@ -35,14 +43,6 @@ variable "ec2_max_instance_size" {
   description = "Maximum number of instances to launch in AutoScaling Group"
 }
 
-variable "tag_production" {
-  default = "Production"
-}
-
-variable "tag_webapp" {
-  default = "WebApp"
-}
-
-variable "tag_backend" {
-  default = "Backend"
+variable "lb_internal" {
+  default = false
 }

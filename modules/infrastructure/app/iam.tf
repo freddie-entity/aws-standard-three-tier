@@ -1,5 +1,5 @@
-resource "aws_iam_role" "webserver" {
-  name               = "WebserverIAMRole"
+resource "aws_iam_role" "main" {
+  name               = "${var.tier}IAMRole"
   assume_role_policy = <<EOF
 {
   "Version" : "2012-10-17",
@@ -17,9 +17,9 @@ resource "aws_iam_role" "webserver" {
 EOF
 }
 
-resource "aws_iam_role_policy" "ec2_iam_role_policy" {
-  name = "WebserverIAMPolicy"
-  role = aws_iam_role.webserver.id
+resource "aws_iam_role_policy" "main" {
+  name = "${var.tier}IAMPolicy"
+  role = aws_iam_role.main.id
 
   policy = <<EOF
 {
@@ -40,7 +40,7 @@ resource "aws_iam_role_policy" "ec2_iam_role_policy" {
 EOF
 }
 
-resource "aws_iam_instance_profile" "webserver" {
-  name = "WebserverInstanceProfile"
-  role = aws_iam_role.webserver.name
+resource "aws_iam_instance_profile" "main" {
+  name = "${var.tier}InstanceProfile"
+  role = aws_iam_role.main.name
 }

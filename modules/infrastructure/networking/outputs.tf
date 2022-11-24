@@ -13,3 +13,19 @@ output "public_subnets" {
 output "private_subnets" {
   value = aws_subnet.private.*.id
 }
+
+output "bastion_security_group_id" {
+  value = aws_security_group.bastion.id
+}
+
+output "webtier_security_group_id" {
+  value = aws_security_group.webtier.id
+}
+
+output "apptier_security_group_id" {
+  value = aws_security_group.apptier.id
+}
+
+output "databasetier_security_group_id" {
+  value = aws_security_group.databasetier.id
+}
