@@ -1,12 +1,23 @@
+# Networking & security baseline
 module "networking" {
-  source   = "../../modules/infrastructure/networking"
+  source   = "../../modules/networking"
   app_name = var.app_name
   cidr     = var.cidr
   azs      = var.azs
 }
 
+module "bastion" {
+  source = "../../modules/bastion"
+
+  ec2_instance_type  = "t2.micro"
+  ec2_key_pair_name  = "docker"
+  security_group_ids = [module.networking.bastion_security_group_id]
+  application_subnets          = module.networking.public_subnets
+}
+
+# Three tier architecture
 module "presentation_tier" {
-  source = "../../modules/infrastructure/app"
+  source = "../../modules/app"
 
   tier                = "web"
   lb_internal         = false
@@ -17,17 +28,8 @@ module "presentation_tier" {
   security_group_ids  = [module.networking.presentation_tier_security_group_id]
 }
 
-module "bastion" {
-  source = "../../modules/infrastructure/bastion"
-
-  ec2_instance_type  = "t2.micro"
-  ec2_key_pair_name  = "docker"
-  security_group_ids = [module.networking.bastion_security_group_id]
-  application_subnets          = module.networking.public_subnets
-}
-
 module "application_tier" {
-  source = "../../modules/infrastructure/app"
+  source = "../../modules/app"
 
   tier                = "app"
   lb_internal         = true
@@ -41,7 +43,7 @@ module "application_tier" {
 
 
 module "data_tier" {
-  source = "../../modules/infrastructure/databases"
+  source = "../../modules/databases"
 
   tier                = "app"
   db_subnets = module.networking.public_subnets
